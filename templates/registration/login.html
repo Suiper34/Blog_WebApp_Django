@@ -1,0 +1,48 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block title %}Login - SuipBlog{% endblock %}
+
+{% block header %}
+<header class="masthead" style="background-image: url({% static 'assets/img/register-bg.jpg' %});">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Login</h1>
+                    <span class="subheading">To JhapTech Inc.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container my-auto">
+    <div class="row">
+        <div class="col-lg-4 col-md-8 col-12 mx-auto">
+            <div class="card z-index-0 fadeIn3 fadeInBottom">
+                <div class="card-body">
+                    <form role="form" method="post" action="" class="text-start">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        <div class="input-group input-group-outline mb-3">
+                            {{ form.as_p }}
+                        </div>
+                        <button class="btn btn-success w-100" type="submit">Sign In</button>
+                        <p class="mt-4 text-sm text-center">
+                            Don't have an account?
+                            <a href="{% url 'register' %}"
+                                class="text-primary text-gradient font-weight-bold">Register</a>
+                        </p>
+                        <p class="mt-4 text-sm text-center">
+                            <a href="{% url 'password_reset' %}" class="text-primary text-gradient font-weight-bold">Forgotten Password?</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

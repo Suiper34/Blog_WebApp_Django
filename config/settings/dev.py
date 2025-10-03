@@ -95,6 +95,10 @@ AUTH_USER_MODEL = os.environ.get('AUTH_USER_MODEL', 'users.User')
 EMAIL_BACKEND = os.environ.get(
     'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 
+# redirect users to home after login/logout when no "next" provided
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
 if DEBUG:
     try:
         INSTALLED_APPS = list(dict.fromkeys(INSTALLED_APPS))
