@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from .forms import CreatePost, UsersComments
 from .models import Comments, Post
 
-load_dotenv('.env')
+load_dotenv()
 
 
 def home(request):

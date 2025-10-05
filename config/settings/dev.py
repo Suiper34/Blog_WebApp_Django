@@ -1,4 +1,4 @@
-import os
+from os import environ, urandom
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -7,16 +7,16 @@ from .base import *
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR: Path = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = os.environ.get(
-    'DJANGO_SECRET_KEY', str(os.urandom(32)))
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.environ.get(
+SECRET_KEY: str | bytes = environ.get(
+    'DJANGO_SECRET_KEY', str(urandom(32)))
+DEBUG: bool = environ.get('DJANGO_DEBUG', 'True') == 'True'
+ALLOWED_HOSTS: list[str] = environ.get(
     'DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 # applications
-INSTALLED_APPS = [
+INSTALLED_APPS: list[str] = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE: list[str] = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -42,7 +42,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-TEMPLATES = [
+TEMPLATES: list[dict] = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
@@ -61,7 +61,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # SQLite db for development
-DATABASES = {
+DATABASES: dict[str, dict[str, str]] = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
@@ -69,39 +69,39 @@ DATABASES = {
 }
 
 # password validation (keep defaults)
-AUTH_PASSWORD_VALIDATORS = [
+AUTH_PASSWORD_VALIDATORS: list[dict] = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
+LANGUAGE_CODE: str = 'en-us'
+TIME_ZONE: str = 'UTC'
+USE_I18N: bool = True
+USE_TZ: bool = True
 
 # static files
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL: str = '/static/'
+STATICFILES_DIRS: list[Path] = [BASE_DIR / 'static']
+STATIC_ROOT: Path = BASE_DIR / 'staticfiles'
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIEL: str = 'django.db.models.BigAutoField'
 
 # custom user model
-AUTH_USER_MODEL = os.environ.get('AUTH_USER_MODEL', 'users.User')
+AUTH_USER_MODEL: str = environ.get('AUTH_USER_MODEL', 'users.User')
 
 # development email backend
-EMAIL_BACKEND = os.environ.get(
+EMAIL_BACKEND: str = environ.get(
     'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 
 # redirect users to home after login/logout when no "next" provided
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL: str = 'home'
+LOGOUT_REDIRECT_URL: str = 'home'
 
 if DEBUG:
     try:
-        INSTALLED_APPS = list(dict.fromkeys(INSTALLED_APPS))
+        INSTALLED_APPS: list[str] = list(dict.fromkeys(INSTALLED_APPS))
     except Exception:
         # keep original list
         pass
