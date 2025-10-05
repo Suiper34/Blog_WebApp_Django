@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - SuipBlog{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+<article class="mb-4">
+
+    <header class="masthead" style="background-image: url('{{ post.img_url }}')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>{{ post.title }}</h1>
+                        <span class="subheading">{{ post.subtitle }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="mb-4">{{ post.body|safe }}</div>
+    <div class="mb-3 text-muted">By {{ post.author.username|default:'Unknown' }} • {{ post.date|date:"M d, Y" }}</div>
+
+    <section class="mt-5">
+        <h4>Comments</h4>
+        {% if current_user.is_authenticated %}
+        <form method="post" class="mb-3">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="mb-2">
+                {{ form.comment.label_tag }}{{ form.comment }}
+                <div class="text-danger small">{{ form.comment.errors }}</div>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" type="submit">Add Comment</button>
+        </form>
+        {% else %}
+        <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to add a comment.</p>
+        {% endif %}
+
+        <ul class="list-unstyled">
+            {% for comment in comments %}
+            <li class="border rounded p-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <strong>{{ comment.the_user.username|default:'Anon' }}</strong>
+                    <small class="text-muted">{{ comment.date|date:"M d, Y H:i" }}</small>
+                </div>
+                <div class="mt-2">{{ comment.comment }}</div>
+            </li>
+            {% empty %}
+            <li class="text-muted">No comments yet.</li>
+            {% endfor %}
+        </ul>
+    </section>
+</article>
+
+
+{% if current_user.is_authenticated %}
+{% if current_user.is_superuser or current_user.is_staff or current_user.role|default:"" == "admin" %}
+<div class="d-flex justify-content-end mb-4">
+    <a class="btn btn-secondary text-uppercase" href="{% url 'edit_post' post_id=post.id %}">Edit Post</a>
+</div>
+{% endif %}
+{% endif %}
+
+{% endblock %}
