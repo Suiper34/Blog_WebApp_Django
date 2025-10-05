@@ -1,6 +1,6 @@
 import logging
+from os import environ
 import smtplib
-from typing import Any
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
@@ -16,8 +16,11 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext
+from dotenv import load_dotenv
 
 from .forms import LoginUser, SignUpUser
+
+load_dotenv('.env')
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -88,7 +91,6 @@ def login_view(request: HttpRequest) -> HttpResponse:
 def logout_view(request: HttpRequest) -> HttpResponse:
     """
     Log out the user. Accept POST for logout; GET will redirect home to avoid 405.
-    Using POST for logout is the recommended secure pattern.
     """
     if request.method == "POST":
         try:
@@ -98,7 +100,6 @@ def logout_view(request: HttpRequest) -> HttpResponse:
             return redirect("home")
         messages.success(request, "You have been logged out.")
         return redirect("home")
-    # Avoid 405 on GET: redirect to home (or render a confirmation page if preferred)
     return redirect("home")
 
 
@@ -109,7 +110,7 @@ class PasswordResetView(DjangoPasswordResetView):
     email_template_name = 'registration/password_reset_email.html'
     subject_template_name = 'registration/password_reset_subject.txt'
     success_url = reverse_lazy('password_reset_done')
-    from_email = None  # uses DEFAULT_FROM_EMAIL if None
+    from_email = environ.get('EMAIL')
 
     def form_valid(self, form):
         try:

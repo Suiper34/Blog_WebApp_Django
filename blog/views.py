@@ -9,9 +9,12 @@ from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from users.decorators import admins_only
+from dotenv import load_dotenv
 
 from .forms import CreatePost, UsersComments
 from .models import Comments, Post
+
+load_dotenv('.env')
 
 
 def home(request):
