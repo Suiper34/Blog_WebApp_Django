@@ -10,7 +10,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Security settings
-SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
+SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(32))
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
