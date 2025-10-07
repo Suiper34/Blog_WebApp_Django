@@ -42,7 +42,7 @@ Welcome to the Blog Web App Django project! This is a blog web application built
 
    ```bash
    python -m venv venv
-   source venv\Scripts\activate(Windows) or venv/bin/activate
+   venv\Scripts\activate(Windows) or source venv/bin/activate
    ```
 
 3. **Install the required packages:**
